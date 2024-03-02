@@ -1,4 +1,4 @@
-package com.circuit.journal.ui.features.journal.presenter.util.composables.journal.components
+package com.circuit.journal.composables.journal.components
 
 import android.util.SparseIntArray
 import androidx.compose.ui.text.SpanStyle

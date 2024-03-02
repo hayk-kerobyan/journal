@@ -1,4 +1,4 @@
-package com.circuit.journal.ui.theme
+package com.circuit.journal.common.theme
 
 import android.app.Activity
 import android.os.Build

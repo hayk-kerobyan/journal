@@ -1,4 +1,4 @@
-package com.circuit.journal.ui.theme
+package com.circuit.journal.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

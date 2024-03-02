@@ -1,5 +1,7 @@
-package com.circuit.journal.ui.features.journal.presenter.util.composables.journal
+package com.circuit.journal.composables.journal
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,8 +9,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import com.circuit.journal.ui.features.journal.presenter.util.composables.journal.components.JournalTextTransformer
-import com.circuit.journal.ui.features.journal.presenter.util.composables.journal.components.TransformationConfig
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.circuit.journal.common.theme.JournalTheme
+import com.circuit.journal.composables.journal.components.JournalTextTransformer
+import com.circuit.journal.composables.journal.components.TransformationConfig
+import com.circuit.journal.composables.journal.defaults.BoldTransformationConfig
+import com.circuit.journal.composables.journal.defaults.HeadlineTransformationConfig
 
 /**
  * A BasicTextField that transforms the text styling according to received [TransformationConfig].
@@ -51,4 +58,30 @@ fun Journal(
         visualTransformation = textTransformation,
         textStyle = textStyle,
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun JournalPreview() {
+    JournalTheme {
+        Journal(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            value = ">This is a Headline\n" +
+                    "\n" +
+                    "The last 3 words of line [must be bold]\n" +
+                    "And this is an ordinary line\n" +
+                    "\n" +
+                    "[Note:] You can add or remove any config in transformationConfigs param" +
+                    "and the text will behave respectively\n" +
+                    "\n" +
+                    "Such custom configs should be stored in [defaults] folder",
+            onValueChange = {},
+            transformationConfigs = listOf(
+                HeadlineTransformationConfig,
+                BoldTransformationConfig
+            )
+        )
+    }
 }

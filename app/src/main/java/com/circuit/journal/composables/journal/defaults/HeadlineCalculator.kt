@@ -1,9 +1,9 @@
-package com.circuit.journal.ui.features.journal.presenter.util.composables.journal.defaults
+package com.circuit.journal.composables.journal.defaults
 
 import android.util.SparseIntArray
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.sp
-import com.circuit.journal.ui.features.journal.presenter.util.composables.journal.components.TransformationConfig
+import com.circuit.journal.composables.journal.components.TransformationConfig
 
 
 val HeadlineTransformationConfig = TransformationConfig(
