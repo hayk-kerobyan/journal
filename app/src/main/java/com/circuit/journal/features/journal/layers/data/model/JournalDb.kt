@@ -9,5 +9,5 @@ import java.util.Date
 data class JournalDb(
     @PrimaryKey(autoGenerate = true) @ColumnInfo("id") val id: Long,
     @ColumnInfo("text") val text: String,
-    @ColumnInfo("savedAt") val date: Date?
+    @ColumnInfo("savedAt") val savedAt: Date?
 )

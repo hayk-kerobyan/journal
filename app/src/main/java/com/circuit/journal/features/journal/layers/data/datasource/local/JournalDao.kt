@@ -14,7 +14,7 @@ interface JournalDao {
     fun insert(journal: JournalDb): Long
 
     @Query("SELECT * FROM journals WHERE savedAt IS NULL")
-    fun getUnsavedJournal(): Flow<JournalDb>
+    fun getUnsavedJournal(): Flow<JournalDb?>
 
     @Query("SELECT * FROM journals WHERE id = :id")
     fun getById(id: Long): Flow<JournalDb>

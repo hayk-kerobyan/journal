@@ -5,7 +5,9 @@ import com.circuit.journal.db.AppDatabase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import kotlin.coroutines.CoroutineContext
 
 val appModule = module {
 
@@ -17,7 +19,7 @@ val appModule = module {
         ).build()
     }
 
-    single<CoroutineDispatcher> {
+    single<CoroutineContext>(named("io")) {
         Dispatchers.IO
     }
 }
