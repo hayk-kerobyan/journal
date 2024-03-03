@@ -12,14 +12,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.circuit.journal.common.theme.JournalTheme
-import com.circuit.journal.composables.journal.components.JournalTextTransformer
+import com.circuit.journal.composables.journal.components.JournalTextVisualTransformer
 import com.circuit.journal.composables.journal.components.TransformationConfig
 import com.circuit.journal.composables.journal.defaults.BoldTransformationConfig
 import com.circuit.journal.composables.journal.defaults.HeadlineTransformationConfig
 
 /**
  * A BasicTextField that transforms the text styling according to received [TransformationConfig].
- * Styling transformations are applied with the help of [JournalTextTransformer] class.
+ * Styling transformations are applied with the help of [JournalTextVisualTransformer] class.
  *
  * @param value the input [String] text to be shown in the text field
  * @param onValueChange the callback that is triggered when the input service updates the text. An
@@ -29,7 +29,7 @@ import com.circuit.journal.composables.journal.defaults.HeadlineTransformationCo
  * @param transformationConfigs Config classes that define text visual transformation rules
  *
  * @see [TransformationConfig]
- * @see [JournalTextTransformer]
+ * @see [JournalTextVisualTransformer]
  */
 @Composable
 fun Journal(
@@ -42,7 +42,7 @@ fun Journal(
 
     val textTransformation by remember {
         mutableStateOf(
-            JournalTextTransformer(
+            JournalTextVisualTransformer(
                 textStyle.toSpanStyle(),
                 transformationConfigs
             )

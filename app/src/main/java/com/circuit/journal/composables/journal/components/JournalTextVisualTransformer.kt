@@ -19,7 +19,7 @@ import androidx.core.util.forEach
  * @see TransformationConfig
  *
  */
-class JournalTextTransformer(
+class JournalTextVisualTransformer(
     private val defaultStyle: SpanStyle,
     private val transformationConfigs: List<TransformationConfig>
 ) : VisualTransformation {
@@ -27,19 +27,24 @@ class JournalTextTransformer(
     override fun filter(text: AnnotatedString): TransformedText {
         val textString = text.text
         val skippedIndices = BooleanArray(textString.length)
-        val transformed = buildAnnotatedString {
 
+        //define text segments subject to transformation by each config
+        val styledSegments = transformationConfigs
+            .map { calculateStyledSegment(textString, it.openingChar, it.closingChar) }
+
+        val transformed = buildAnnotatedString {
             for (i in textString.indices) { // iterate through each char
                 var spanStyle = defaultStyle
                 var skipChar = false
 
-                //apply each transformation if the char is in the range
-                transformationConfigs
-                    .map { it.transformedRangeCalculation(textString) }
+                //apply each transformation if the char is within the styled segment
+                styledSegments
                     .forEachIndexed { index, transformationRanges ->
                         transformationRanges.forEach { startPos, endPos ->
                             if (i in startPos..endPos) {
-                                if (transformationConfigs[index].shouldSkip(i, startPos, endPos)) {
+                                if (!transformationConfigs[index].showOpeningChar && i == startPos
+                                    || !transformationConfigs[index].showClosingChar && i == endPos
+                                ) {
                                     skipChar = true
                                 } else {
                                     spanStyle = spanStyle.merge(transformationConfigs[index].style)
@@ -59,7 +64,7 @@ class JournalTextTransformer(
 
         return TransformedText(
             text = transformed,
-            offsetMapping = JournalOffsetMapper(skippedIndices)
+            offsetMapping = JournalCursorOffsetMapper(skippedIndices)
         )
     }
 }

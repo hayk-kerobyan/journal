@@ -5,7 +5,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 /**
  * Calculates the omitted chars in the text and adjusts cursor position respectively
  */
-class JournalOffsetMapper(private val numOfCharsDeleted: BooleanArray) : OffsetMapping {
+class JournalCursorOffsetMapper(private val numOfCharsDeleted: BooleanArray) : OffsetMapping {
 
     override fun originalToTransformed(offset: Int): Int {
         var numOfSkipped = 0
