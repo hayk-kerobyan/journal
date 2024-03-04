@@ -11,11 +11,11 @@ import androidx.navigation.navArgument
 import com.circuit.journal.features.journal.layers.presenter.JournalScreen
 import com.circuit.journal.features.journal.layers.presenter.JournalViewModel
 import com.circuit.journal.features.journal.layers.presenter.OnHtmlSendError
-import com.circuit.journal.features.journal.layers.presenter.OnJournalSelected
 import com.circuit.journal.features.journal.layers.presenter.OnJournalTextChange
 import com.circuit.journal.features.journal.layers.presenter.OnSaveClicked
 import com.circuit.journal.features.journal.layers.presenter.OnShareClicked
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 
 const val KEY_JOURNAL_ID = "id"
@@ -33,7 +33,8 @@ fun Navigation() {
                 }
             )
         ) {
-            val viewModel = koinViewModel<JournalViewModel>()
+            val id = it.arguments?.getString(KEY_JOURNAL_ID)?.toLong()
+            val viewModel = koinViewModel<JournalViewModel> { parametersOf(id) }
             val state by viewModel.state.collectAsState()
             JournalScreen(
                 state = state,
@@ -43,7 +44,11 @@ fun Navigation() {
                 onShareClick = { journal, transformationConfigs ->
                     viewModel.onEvent(OnShareClicked(journal, transformationConfigs))
                 },
-                onJournalSelected = { viewModel.onEvent(OnJournalSelected(it)) },
+                onJournalSelected = {
+                    navController.navigate(
+                        Screen.JournalScreen.route + "?$KEY_JOURNAL_ID=${it.id}"
+                    )
+                },
                 onHtmlSendError = { viewModel.onEvent(OnHtmlSendError) },
             )
         }

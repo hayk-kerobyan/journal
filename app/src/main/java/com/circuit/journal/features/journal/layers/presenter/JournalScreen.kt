@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.circuit.journal.common.extensions.browseHtml
 import com.circuit.journal.common.theme.JournalTheme
 import com.circuit.journal.composables.journal.Journal
 import com.circuit.journal.composables.journal.components.TransformationConfig
@@ -23,7 +24,6 @@ import com.circuit.journal.composables.journal.defaults.HeadlineTransformationCo
 import com.circuit.journal.features.journal.layers.domain.model.Journal
 import com.circuit.journal.features.journal.layers.presenter.compose.JournalNavigationDrawer
 import com.circuit.journal.features.journal.layers.presenter.compose.JournalTopBar
-import com.circuit.journal.common.extensions.browseHtml
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow

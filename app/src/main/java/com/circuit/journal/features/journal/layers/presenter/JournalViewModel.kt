@@ -1,6 +1,5 @@
 package com.circuit.journal.features.journal.layers.presenter
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -14,7 +13,6 @@ import com.circuit.journal.features.journal.layers.domain.usecase.GetUnsavedJour
 import com.circuit.journal.features.journal.layers.domain.usecase.InsertJournalUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.SaveJournalUseCase
 import com.circuit.journal.features.journal.utils.exceptions.JournalBlankTextException
-import com.circuit.journal.navigation.KEY_JOURNAL_ID
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class JournalViewModel(
-    private val savedStateHandle: SavedStateHandle,
+    private val journalId: Long?,
     private val insertJournalUseCase: InsertJournalUseCase,
     private val saveJournalUseCase: SaveJournalUseCase,
     private val getUnsavedJournalUseCase: GetUnsavedJournalUseCase,
@@ -40,7 +38,6 @@ class JournalViewModel(
     private val convertToHtmlUseCase: ConvertToHtmlUseCase,
 ) : ViewModel() {
 
-    private val journalId = savedStateHandle.get<Long>(KEY_JOURNAL_ID)
     val journals = getSavedJournalsPagingSourceUseCase().cachedIn(viewModelScope)
 
     private val _state = MutableStateFlow(createState())
@@ -213,5 +210,5 @@ data class OnShareClicked(
 
 data class OnJournalTextChange(val text: String) : JournalEvent
 data class OnJournalSelected(val journal: Journal) : JournalEvent
-data object OnHtmlSendError:JournalEvent
+data object OnHtmlSendError : JournalEvent
 

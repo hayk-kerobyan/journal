@@ -45,12 +45,11 @@ val journalModule = module {
         GetSavedJournalsPagingSourceUseCase(get())
     }
 
-
     single {
         ConvertToHtmlUseCase(get(named("io")))
     }
 
-    viewModel {
-        JournalViewModel(get(), get(), get(), get(), get(), get(), get())
+    viewModel { parameters ->
+        JournalViewModel(parameters.getOrNull(), get(), get(), get(), get(), get(), get())
     }
 }
