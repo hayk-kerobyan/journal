@@ -1,9 +1,9 @@
-![Screenshot 2024-03-04 at 00.15.46.png](Screenshot%202024-03-04%20at%2000.15.46.png)
 # Journal Android
 This is a simple journal Android application built using the Model-View-Intent (MVI) architecture pattern along with Clean Architecture principles. The package structure is designed for easy migration to a multi-module setup.
 
 ## Overview
-#Presenter Layer
+![Screenshot 2024-03-04 at 00.15.46.png](Screenshot%202024-03-04%20at%2000.15.46.png)
+# Presenter Layer
 - The UI consists of a single screen called `JournalScreen`, featuring a custom composable called `Journal`. `Journal` acts as a wrapper over `BasicTextField` and supports customization through a `TransformationConfig`, enabling different text styles through opening and closing tag characters. Upon saving a journal (if it wasn't previously saved), the text is being reset. All saved journals are displayed in the Navigation drawer. The list is fetched page-by-page.
 - The `ViewModel` manages the view state and executes app business logic through `UseCases`. It handles data caching and retrieval.
 
