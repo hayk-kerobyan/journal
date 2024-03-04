@@ -1,8 +1,8 @@
 package com.circuit.journal.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,7 +35,7 @@ fun Navigation() {
         ) {
             val id = it.arguments?.getString(KEY_JOURNAL_ID)?.toLong()
             val viewModel = koinViewModel<JournalViewModel> { parametersOf(id) }
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             JournalScreen(
                 state = state,
                 actions = viewModel.action,
