@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.circuit.journal.common.formatter.getFormattedDateAndTime
+import com.circuit.journal.common.extensions.displayedDateAndTime
 import com.circuit.journal.features.journal.layers.domain.model.Journal
 
 @Composable
@@ -24,6 +24,6 @@ fun JournalListItem(
             .padding(16.dp),
     ) {
         Text(text = journal.text.take(20), maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Text(text = getFormattedDateAndTime(journal.savedAt))
+        Text(text = journal.savedAt?.displayedDateAndTime() ?: "")
     }
 }

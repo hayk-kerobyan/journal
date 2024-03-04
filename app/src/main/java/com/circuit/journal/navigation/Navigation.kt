@@ -8,12 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.circuit.journal.features.journal.layers.presenter.JournalEvent
 import com.circuit.journal.features.journal.layers.presenter.JournalScreen
 import com.circuit.journal.features.journal.layers.presenter.JournalViewModel
+import com.circuit.journal.features.journal.layers.presenter.OnHtmlSendError
 import com.circuit.journal.features.journal.layers.presenter.OnJournalSelected
 import com.circuit.journal.features.journal.layers.presenter.OnJournalTextChange
 import com.circuit.journal.features.journal.layers.presenter.OnSaveClicked
+import com.circuit.journal.features.journal.layers.presenter.OnShareClicked
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -36,10 +37,14 @@ fun Navigation() {
             val state by viewModel.state.collectAsState()
             JournalScreen(
                 state = state,
+                actions = viewModel.action,
                 onValueChange = { viewModel.onEvent(OnJournalTextChange(it)) },
                 onSaveClick = { viewModel.onEvent(OnSaveClicked(it)) },
-                onShareClick = {},
-                onJournalSelected = { viewModel.onEvent(OnJournalSelected(it)) }
+                onShareClick = { journal, transformationConfigs ->
+                    viewModel.onEvent(OnShareClicked(journal, transformationConfigs))
+                },
+                onJournalSelected = { viewModel.onEvent(OnJournalSelected(it)) },
+                onHtmlSendError = { viewModel.onEvent(OnHtmlSendError) },
             )
         }
     }

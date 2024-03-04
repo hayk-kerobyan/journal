@@ -4,6 +4,7 @@ import com.circuit.journal.db.AppDatabase
 import com.circuit.journal.features.journal.layers.data.datasource.local.JournalDao
 import com.circuit.journal.features.journal.layers.data.repo.JournalRepoImpl
 import com.circuit.journal.features.journal.layers.domain.repo.JournalRepo
+import com.circuit.journal.features.journal.layers.domain.usecase.ConvertToHtmlUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetJournalByIdUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetSavedJournalsPagingSourceUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetUnsavedJournalUseCase
@@ -44,7 +45,12 @@ val journalModule = module {
         GetSavedJournalsPagingSourceUseCase(get())
     }
 
+
+    single {
+        ConvertToHtmlUseCase(get(named("io")))
+    }
+
     viewModel {
-        JournalViewModel(get(), get(), get(), get(),get(), get())
+        JournalViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 }

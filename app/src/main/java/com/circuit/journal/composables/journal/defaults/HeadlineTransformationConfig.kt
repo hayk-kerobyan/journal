@@ -12,5 +12,7 @@ val HeadlineTransformationConfig = TransformationConfig(
     closingChar = '\n',
     showOpeningChar = false,
     showClosingChar = true,
-    style = SpanStyle(fontSize = 32.sp)
+    style = SpanStyle(fontSize = 32.sp),
+    openingHtml = "<h1>",
+    closingHtml = "</h1>"
 )

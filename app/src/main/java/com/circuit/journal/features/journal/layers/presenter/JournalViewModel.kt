@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.circuit.journal.composables.journal.components.TransformationConfig
 import com.circuit.journal.features.journal.layers.domain.model.Journal
+import com.circuit.journal.features.journal.layers.domain.usecase.ConvertToHtmlUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetJournalByIdUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetSavedJournalsPagingSourceUseCase
 import com.circuit.journal.features.journal.layers.domain.usecase.GetUnsavedJournalUseCase
@@ -35,6 +37,7 @@ class JournalViewModel(
     private val getUnsavedJournalUseCase: GetUnsavedJournalUseCase,
     private val getJournalByIdUseCase: GetJournalByIdUseCase,
     private val getSavedJournalsPagingSourceUseCase: GetSavedJournalsPagingSourceUseCase,
+    private val convertToHtmlUseCase: ConvertToHtmlUseCase,
 ) : ViewModel() {
 
     private val journalId = savedStateHandle.get<Long>(KEY_JOURNAL_ID)
@@ -70,6 +73,10 @@ class JournalViewModel(
                 saveJournal(event.journal)
             }
 
+            is OnShareClicked -> {
+                convertToHtmlAndShare(event.journal, event.transformationConfigs)
+            }
+
             is OnJournalTextChange -> {
                 updateJournalText(event.text)
             }
@@ -77,16 +84,42 @@ class JournalViewModel(
             is OnJournalSelected -> {
 
             }
+
+            OnHtmlSendError -> {
+                onHtmlSendFailed()
+            }
         }
     }
 
     private fun saveJournal(journal: Journal) {
         saveJournalUseCase(journal)
-            .onEach { journal.savedAt ?: getUnsavedJournal() } //Reset text if the journal wasn't saved previously(project requirement)
+            .onEach {
+                journal.savedAt ?: getUnsavedJournal()
+            } //Reset text if the journal wasn't saved previously(project requirement)
             .onCompletion { _action.send(OnMessage("The journal was saved")) }
             .catch { onSaveFailed(it) }
             .launchIn(viewModelScope)
     }
+
+    private fun convertToHtmlAndShare(
+        journal: Journal,
+        transformationConfigs: List<TransformationConfig>
+    ) {
+        convertToHtmlUseCase(journal.text, transformationConfigs)
+            .onStart {
+                _state.update { it.copy(isLoading = true) }
+            }
+            .onEach {
+                _state.update { it.copy(isLoading = false) }
+                _action.send(OnHtmlGenerated(it))
+            }
+            .catch {
+                handleError(it, "Failed to generate HTML")
+            }
+            .launchIn(viewModelScope)
+
+    }
+
 
     private fun updateJournalText(text: String) {
         _state.update { it.copy(journal = it.journal?.copy(text = text)) }
@@ -125,6 +158,12 @@ class JournalViewModel(
         }
     }
 
+    private fun onHtmlSendFailed() {
+        viewModelScope.launch {
+            _action.send(OnMessage("Failed to send HTML"))
+        }
+    }
+
     private suspend fun onSaveFailed(it: Throwable) {
         val message = (it as? JournalBlankTextException)?.message ?: "Failed to save the journal"
         handleError(it, message)
@@ -154,6 +193,7 @@ class JournalViewModel(
  */
 sealed interface JournalAction
 data class OnMessage(val message: String) : JournalAction
+data class OnHtmlGenerated(val html: String) : JournalAction
 
 data class JournalState(
     val journal: Journal?,
@@ -166,6 +206,12 @@ data class JournalState(
  */
 sealed interface JournalEvent
 data class OnSaveClicked(val journal: Journal) : JournalEvent
+data class OnShareClicked(
+    val journal: Journal,
+    val transformationConfigs: List<TransformationConfig>
+) : JournalEvent
+
 data class OnJournalTextChange(val text: String) : JournalEvent
 data class OnJournalSelected(val journal: Journal) : JournalEvent
+data object OnHtmlSendError:JournalEvent
 

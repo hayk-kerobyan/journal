@@ -12,5 +12,7 @@ val BoldTransformationConfig = TransformationConfig(
     closingChar = ']',
     showOpeningChar = false,
     showClosingChar = false,
-    style = SpanStyle(fontWeight = FontWeight.Bold)
+    style = SpanStyle(fontWeight = FontWeight.Bold),
+    openingHtml = "<b>",
+    closingHtml = "</b>"
 )
