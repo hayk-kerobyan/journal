@@ -1,3 +1,4 @@
+![Screenshot 2024-03-04 at 00.15.46.png](Screenshot%202024-03-04%20at%2000.15.46.png)
 # Journal Android
 This is a simple journal Android application built using the Model-View-Intent (MVI) architecture pattern along with Clean Architecture principles. The package structure is designed for easy migration to a multi-module setup.
 
