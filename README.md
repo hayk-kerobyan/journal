@@ -2,6 +2,20 @@
 This is a simple journal Android application built using the Model-View-Intent (MVI) architecture pattern along with Clean Architecture principles. The package structure is designed for easy migration to a multi-module setup.
 
 ## Overview
+`Jorunal` composable is wrapper over BasicTextField that transforms the text styling according to received `List<TransformationConfig>`. 
+
+# `TransformationConfig`
+| Params  | Type | Description |Example values |
+| ------------- | ------------- | ------------- | ------------- |
+| style | SpanStyle  | The style to be applied to the text segment between opening and closing tags |SpanStyle(fontWeight = FontWeight.Bold)  |
+| openingChar | Char  | opening tag |'>' for headline  |
+| closingChar | Char  | closing tag  |'\n' for headline  |
+| showOpeningChar | Boolean  | defines if the opening tag should be shown or hidden  | false as '>' should be hidden  |
+| showClosingChar | Boolean  | defines if the opening tag should be shown or hidden | true as '\n' should be shown  |
+| openingHtml | String  | corresponding html for opening tag |\<h1> for '>'  |
+| closingHtml | String  | corresponding html for closing tag |<\/h1> for '\n'  |
+
+## Arhitecture
 ![Screenshot 2024-03-04 at 00.15.46.png](Screenshot%202024-03-04%20at%2000.15.46.png)
 # Presenter Layer
 - The UI consists of a single screen called `JournalScreen`, featuring a custom composable called `Journal`. `Journal` acts as a wrapper over `BasicTextField` and supports customization through a `TransformationConfig`, enabling different text styles through opening and closing tag characters. Upon saving a journal (if it wasn't previously saved), the text is being reset. All saved journals are displayed in the Navigation drawer. The list is fetched page-by-page.
